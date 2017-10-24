@@ -4,7 +4,7 @@ import json
 from django.conf import settings
 
 
-# access_token
+# Get access token
 def get_access_token():
     # API Key & API secret
     access_data = {
@@ -41,9 +41,9 @@ def validation_prepare(merchant_id, amount, *args, **kwargs):
         res = req.json()
 
         if res['code'] is not 0:
-            raise ValueError("API 연결에 문제가 생겼습니다.")
+            raise ValueError("There was a problem with the API connection.")
     else:
-        raise ValueError("인증 토큰이 없습니다.")
+        raise ValueError("There are no authentication tokens.")
 
 
 def get_transaction(merchant_id, *args, **kwargs):
@@ -73,4 +73,4 @@ def get_transaction(merchant_id, *args, **kwargs):
             return None
 
     else:
-        raise ValueError("인증 토큰이 없습니다.")
+        raise ValueError("There are no authentication tokens.")

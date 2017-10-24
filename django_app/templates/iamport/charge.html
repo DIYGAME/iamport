@@ -21,25 +21,27 @@
                 var merchant_id = AjaxStoreTransaction(e, amount, type);
 
                 if (merchant_id !== '') {
+                    // iamport Request pay
                     IMP.request_pay({
                         pg: 'html5_inicis',
                         escrow: false,
                         digital: true,
                         pay_method: type,
                         merchant_uid: merchant_id,
-                        name: '포인트' + amount + '원 충전',
+                        name: 'point' + amount + 'Charge',
                         amount: amount
                     }, function (rsp) {
                         if (rsp.success) {
-                            var msg = '결제가 완료되었습니다.';
-                            msg += '고유ID : ' + rsp.imp_uid;
-                            msg += '상점 거래ID : ' + rsp.merchant_uid;
-                            msg += '결제 금액 : ' + rsp.paid_amount;
-                            msg += '카드 승인번호 : ' + rsp.apply_num;
+                            var msg = 'Your payment was successful.';
+                            msg += 'imp_uid : ' + rsp.imp_uid;
+                            msg += 'merchant_uid : ' + rsp.merchant_uid;
+                            msg += 'Amount of payment : ' + rsp.paid_amount;
+                            msg += 'Card Authorization Number : ' + rsp.apply_num;
+                            // point validation
                             ImpTransaction(e, rsp.merchant_uid, rsp.imp_uid, rsp.paid_amount);
                         } else {
-                            var msg = '결제에 실패하였습니다.';
-                            msg += '에러내용 : ' + rsp.error_msg;
+                            var msg = 'Payment failed.';
+                            msg += 'error message : ' + rsp.error_msg;
                             console.log(msg);
                         }
                     });
@@ -47,6 +49,7 @@
             });
         });
 
+        // Get merchant_id
         function AjaxStoreTransaction(e, amount, type) {
             e.preventDefault();
             var merchant_id = '';
@@ -69,16 +72,17 @@
                 console.log(jqXHR)
                 console.log(textStatuss)
                 if (jqXHR.status == 404) {
-                    alert("페이지가 존재하지 않습니다.");
+                    alert("page not found.");
                 } else if (jqXHR.status == 403) {
-                    alert("로그인 해주세요.");
+                    alert("login required");
                 } else {
-                    alert("문제가 발생했습니다. 다시 시도해주세요.");
+                    alert("Something went wrong. Please try again.");
                 }
             });
             return merchant_id;
         }
 
+        // point validation
         function ImpTransaction(e, merchant_id, imp_id, amount) {
             e.preventDefault();
             var request = $.ajax({
@@ -99,11 +103,11 @@
             request.fail(function (jqXHR, textStatus) {
                 console.log(jqXHR)
                 if (jqXHR.status == 404) {
-                    alert("페이지가 존재하지 않습니다.");
+                    alert("page not found.");
                 } else if (jqXHR.status == 403) {
-                    alert("로그인 해주세요.");
+                    alert("login required.");
                 } else {
-                    alert("문제가 발생했습니다. 다시 시도해주세요!");
+                    alert("Something went wrong. Please try again.");
                 }
             });
         }
@@ -111,39 +115,39 @@
 </head>
 <body>
 {% if user.is_authenticated %}
-    {{ user }}으로 접속되어 있습니다.
+    {{ user }} is connected.
 {% else %}
-    로그인 해주세요!
+    login required!
 {% endif %}
 
 <div class="charge-type">
     <div class="billing-title">
-        결제방식
+        Payment method
     </div>
     <div class="billing-radio">
         <label class="control control--radio">
             <input type="radio" name="type" value="card" checked="checked"/>
-            신용카드
+            Credit card
         </label>
         <label class="control control--radio">
             <input type="radio" name="type" value="trans"/>
-            실시간 계좌이체
+            Real-time account transfer
         </label>
         <label class="control control--radio">
             <input type="radio" name="type" value="phone"/>
-            휴대폰
+            Cell phone
         </label>
         <label class="control control--radio">
             <input type="radio" name="type" value="vbank"/>
-            가상계좌 입금
+            Deposit only bank account deposit
         </label>
     </div>
 </div>
 <div class="charge-total">
-    총 결제금액 <span id="total">10원</span>
+    Total payment amount <span id="total">₩10</span>
 </div>
 <div class="charge-click">
-    <button class="charge-button">충전하기</button>
+    <button class="charge-button">Charge</button>
 </div>
 </body>
 </html>

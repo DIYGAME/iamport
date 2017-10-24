@@ -21,10 +21,11 @@ class Point(models.Model):
         return str(self.point)
 
 
+# PointTransaction Custom Manager
 class PointTransactionManager(models.Manager):
     def create_new(self, user, amount, type, success=None, transaction_status=None):
         if not user:
-            raise ValueError("유저가 확인되지 않습니다.")
+            raise ValueError("The user is not verified.")
         short_hash = hashlib.sha1(str(random.random()).encode()).hexdigest()[:2]
         time_hash = hashlib.sha1(str(int(time.time())).encode()).hexdigest()[-3:]
         base = str(user.email).split("@")[0]
@@ -98,7 +99,7 @@ def new_point_trans_validation(sender, instance, created, *args, **kwargs):
         ).exists()
 
         if not v_trans or not r_trans:
-            raise ValueError("비정상적인 거래입니다.")
+            raise ValueError("It's an unusual deal.")
 
 
 post_save.connect(new_point_trans_validation, sender=PointTransaction)
