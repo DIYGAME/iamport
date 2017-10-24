@@ -127,5 +127,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # iamport API KEY
+# Requirement
 IAMPORT_KEY = config_secret_common['iamport']['iamport_key']
 IAMPORT_SECRET = config_secret_common['iamport']['iamport_secret']

@@ -13,7 +13,7 @@
     <script type="text/javascript">
         $(function(){
             var IMP = window.IMP;
-            IMP.init('Your identifying code');
+            IMP.init('Your identifying code'); // Required Code!!!! Important
 
             $('.charge-button').on('click', function (e) {
                 var amount = parseInt($('.charge-total #total').text().replace(',', '').slice(0, -1));
@@ -101,10 +101,9 @@
                 }
             });
             request.fail(function (jqXHR, textStatus) {
-                console.log(jqXHR)
-                if (jqXHR.status == 404) {
+                if (jqXHR.status === 404) {
                     alert("page not found.");
-                } else if (jqXHR.status == 403) {
+                } else if (jqXHR.status === 403) {
                     alert("login required.");
                 } else {
                     alert("Something went wrong. Please try again.");

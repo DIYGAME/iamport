@@ -11,6 +11,9 @@ from . import iamport
 USER = get_user_model()
 
 
+""" Example Model """
+
+
 class Point(models.Model):
     user = models.OneToOneField(USER)
     point = models.PositiveIntegerField(default=0)

@@ -4,7 +4,7 @@ from django.views import View
 
 from .models import PointTransaction, Point
 
-
+# second step
 # Insert billing information in db, Response merchant_id
 class PointCheckoutAjaxView(View):
     def post(self, request, *args, **kwargs):
@@ -39,7 +39,7 @@ class PointCheckoutAjaxView(View):
         else:
             return JsonResponse({}, status=401)
 
-
+# third step
 class PointImpAjaxView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
@@ -72,6 +72,7 @@ class PointImpAjaxView(View):
         else:
             return JsonResponse({}, status=401)
 
+# first step
 # test page
 def charge_point(request):
     template = 'iamport/charge.html'
